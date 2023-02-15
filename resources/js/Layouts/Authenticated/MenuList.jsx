@@ -22,7 +22,7 @@ const UserMenu = [
         text: "Dashboard",
     },
     {
-        link: null,
+        link: "user.dashboard.transactions.index",
         icon: (
             <svg
                 width="24"
