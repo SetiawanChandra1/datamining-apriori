@@ -1,23 +1,18 @@
 import Authenticated from "@/Layouts/Authenticated/Index";
-import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
+import FlashMessage from "@/Components/FlashMessage";
 import { Head, useForm } from "@inertiajs/inertia-react";
 
-export default function Index({ auth }) {
+export default function Index({ auth, flashMessage }) {
     const { setData, post, processing, errors } = useForm({
-        name: "",
-        category: "",
-        video_url: "",
-        thumbnail: "",
-        rating: "",
-        is_featured: "false",
+        dataexcel: "",
     });
 
     const onHandleChange = (event) => {
         setData(
-            // event.target.name,
+            event.target.name,
             event.target.type === "file"
                 ? event.target.files[0]
                 : event.target.value
@@ -27,22 +22,25 @@ export default function Index({ auth }) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route("admin.dashboard.movie.store"));
+        post(route("user.dashboard.user.import"));
     };
 
     return (
         <Authenticated auth={auth}>
             <Head title="Transactions" />
+            {flashMessage?.message && (
+                <FlashMessage message={flashMessage.message} />
+            )}
             <form onSubmit={submit}>
                 <TextInput
                     type="file"
-                    name="thumbnail"
+                    name="dataexcel"
                     variant="primary-outline"
                     handleChange={onHandleChange}
-                    placeholder="Insert thumbnail of the movie"
-                    isError={errors.thumbnail}
+                    placeholder="Insert data excel of the movie"
+                    isError={errors.dataexcel}
                 />
-                <InputError message={errors.thumbnail} className="mt-2" />
+                <InputError message={errors.dataexcel} className="mt-2" />
                 <PrimaryButton
                     type="submit"
                     className="mt-4 w-2/12"
