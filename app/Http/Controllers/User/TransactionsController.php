@@ -12,8 +12,12 @@ use App\Models\TransactionsModel;
 
 class TransactionsController extends Controller
 {
-    public function index(){
-        return inertia('User/Dashboard/Transactions/Index');
+    public function index()
+    {
+        $importedData = TransactionsModel::all();
+        return inertia('User/Dashboard/Transactions/Index',[
+            'importedData' => $importedData
+        ]);
     }
 
     public function import(Request $request)
@@ -28,5 +32,5 @@ class TransactionsController extends Controller
 			'message' => "Succesfully Imported Data",
 			'type' => "success"
 		]);
-    }   
+    }
 }

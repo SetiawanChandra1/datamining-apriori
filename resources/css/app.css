@@ -11,6 +11,22 @@
     display: none !important;
 }
 
+select {
+    border: 1px solid #2d2d2d;
+    outline: none;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+td {
+    border: 1px solid #000;
+}
+
+th {
+    border: 1px solid #000;
+    background: #94b2d6;
+}
+
 @layer components {
     [type="text"],
     [type="email"],
