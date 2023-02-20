@@ -2,35 +2,85 @@
 
 namespace App\Http\Controllers\User;
 
-use Illuminate\Http\Request;
-use Session;
-
-use App\Imports\TransactionsImport;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 use App\Models\TransactionsModel;
+use Illuminate\Http\Request;
 
 class TransactionsController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        $importedData = TransactionsModel::all();
-        return inertia('User/Dashboard/Transactions/Index',[
-            'importedData' => $importedData
-        ]);
+        return inertia('User/Dashboard/Transactions/Index');
     }
 
-    public function import(Request $request)
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
-		$this->validate($request, [
-			'dataexcel' => 'required|mimes:csv,xls,xlsx'
-		]);
-		
-        Excel::import(new TransactionsImport, request()->file('dataexcel')->getRealPath());
-               
-        return back()->with([
-			'message' => "Succesfully Imported Data",
-			'type' => "success"
-		]);
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\TransactionsModel  $transactionsModel
+     * @return \Illuminate\Http\Response
+     */
+    public function show(TransactionsModel $transactionsModel)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\TransactionsModel  $transactionsModel
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(TransactionsModel $transactionsModel)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\TransactionsModel  $transactionsModel
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, TransactionsModel $transactionsModel)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\TransactionsModel  $transactionsModel
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(TransactionsModel $transactionsModel)
+    {
+        //
     }
 }

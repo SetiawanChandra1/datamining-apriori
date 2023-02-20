@@ -32,10 +32,12 @@ Route::middleware(['auth', 'role:user'])->prefix('dashboard')->name('user.dashbo
     Route::get('subscription-plan', [SubscriptionPlanController::class, 'index'])->name('subscriptionPlan.index')->middleware('checkUserSubscription:false');
     Route::post('subscription-plan/{subscriptionPlan}/user-subscribe', [SubscriptionPlanController::class, 'userSubscribe'])->name('subscriptionPlan.userSubscribe')->middleware('checkUserSubscription:false');
 
-    Route::get('transactions', [TransactionsController::class, 'index'])->name('transactions.index');
-
-    Route::post('user-import', [TransactionsController::class, 'import'])->name('user.import');
+    // Route::post('user-import', [TransactionsController::class, 'import'])->name('user.import');
     // Route::get('user-export', [TransactionsController::class, 'export'])->name('user.export');
+
+    //Transaction Section
+    Route::resource('transactions', TransactionsController::class);
+
 
 });
 
