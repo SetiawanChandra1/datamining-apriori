@@ -57,6 +57,7 @@ export default function Index({ auth, flashMessage, importedData }) {
                 <PrimaryButton
                     type="submit"
                     className="mt-4 w-2/12"
+                    variant="primary"
                     processing={processing}
                 >
                     Import
@@ -64,7 +65,11 @@ export default function Index({ auth, flashMessage, importedData }) {
             </form>
             <div className="mt-8">
                 <h1>Show Data :</h1>
-                <select value={limit} onChange={handleLimitChange}>
+                <select
+                    className="w-1/12"
+                    value={limit}
+                    onChange={handleLimitChange}
+                >
                     <option value="10">10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>
@@ -85,6 +90,7 @@ export default function Index({ auth, flashMessage, importedData }) {
                 <tbody>
                     {importedData.slice(0, limit).map((TransactionsModel) => (
                         <tr key={TransactionsModel.id}>
+                            <td>{TransactionsModel.id}</td>
                             <td>{TransactionsModel.code_transactions}</td>
                             <td>{TransactionsModel.date}</td>
                             <td>{TransactionsModel.variant}</td>

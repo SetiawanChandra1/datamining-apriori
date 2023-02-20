@@ -15,11 +15,11 @@ class TransactionsImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
-        if (empty($row['code_transactions'])) {
-            throw new \Exception('Code transactions is required, Please check your excel have a field code_transactions');
+        if (empty($row['code'])) {
+            throw new \Exception('Code is required, Please check your excel have a field code');
         }
         return new TransactionsModel([
-            'code_transactions' => $row['code_transactions'],
+            'code_transactions' => $row['code'],
             'date'              => $row['date'],
             'variant'           => $row['variant'],
         ]);
