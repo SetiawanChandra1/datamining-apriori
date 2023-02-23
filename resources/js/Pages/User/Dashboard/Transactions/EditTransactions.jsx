@@ -41,12 +41,16 @@ export default function Create({ auth, TransactionsModel }) {
             <h1 className="text-xl mb-4">
                 Update Data: {TransactionsModel.id}
             </h1>
-            <hr className="mb4" />
+            <hr className="mb-4" />
             <form onSubmit={submit}>
-                <InputLabel forInput="name" value="Code Transactions:" />
+                <InputLabel
+                    className="mt-3"
+                    forInput="Code Transactions"
+                    value="Code Transactions:"
+                />
                 <TextInput
                     type="text"
-                    name="name"
+                    name="code_transactions"
                     defaultValue={TransactionsModel.code_transactions}
                     variant="primary-outline"
                     handleChange={onHandleChange}
@@ -57,6 +61,39 @@ export default function Create({ auth, TransactionsModel }) {
                     message={errors.code_transactions}
                     className="mt-2"
                 />
+                <InputLabel className="mt-3" forInput="Date" value="Date:" />
+                <TextInput
+                    type="text"
+                    name="date"
+                    defaultValue={TransactionsModel.date}
+                    variant="primary-outline"
+                    handleChange={onHandleChange}
+                    placeholder="Enter the name of the movie"
+                    isError={errors.date}
+                />
+                <InputError message={errors.date} className="mt-2" />
+                <InputLabel
+                    className="mt-3"
+                    forInput="Variant"
+                    value="Variant:"
+                />
+                <TextInput
+                    type="text"
+                    name="variant"
+                    defaultValue={TransactionsModel.variant}
+                    variant="primary-outline"
+                    handleChange={onHandleChange}
+                    placeholder="Enter the name of the movie"
+                    isError={errors.variant}
+                />
+                <InputError message={errors.variant} className="mt-2" />
+                <PrimaryButton
+                    className="mt-4 w-3/12"
+                    type="submit"
+                    processing={processing}
+                >
+                    Save
+                </PrimaryButton>
             </form>
         </Authenticated>
     );
