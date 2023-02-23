@@ -73,7 +73,7 @@ export default function Index({ auth, flashMessage, importedData }) {
             <div className="mt-8">
                 <h1>Show Data :</h1>
                 <select
-                    className="w-1/12"
+                    className="w-1/10"
                     value={limit}
                     onChange={handleLimitChange}
                 >
@@ -87,11 +87,13 @@ export default function Index({ auth, flashMessage, importedData }) {
             <table className="table-fixed w-full text-center mt-4">
                 <thead>
                     <tr>
-                        <th>No</th>
-                        <th>Code Transaction</th>
+                        <th className="w-10">No</th>
+                        <th className="w-2/12">Code Transaction</th>
                         <th>Date</th>
                         <th>Variant</th>
-                        <th colSpan="2">Action</th>
+                        <th colSpan="2" className="w-3/12">
+                            Action
+                        </th>
                     </tr>
                 </thead>
                 <tbody>

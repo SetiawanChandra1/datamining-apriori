@@ -121,14 +121,46 @@ class TransactionsController extends Controller
     public function import(Request $request)
     {
         $this->validate($request, [
-			'dataexcel' => 'required|mimes:csv,xls,xlsx'
-		]);
+            'dataexcel' => 'required|mimes:csv,xls,xlsx'
+        ]);
 
-        Excel::import(new TransactionsImport, request()->file('dataexcel')->getRealPath());
+        $filePath = $request->file('dataexcel')->getRealPath();
+
+        $transactions = [];
+        $variants = [];
+        $dates = [];
+
+        $reader = Excel::toArray([], request()->file('dataexcel'));
+        foreach ($reader[0] as $key => $row) {
+            if ($key > 0) {
+                $code = substr($row[0], -9);
+                $date = $row[1];
+                $variant = $row[2];
+
+                // Save Code Transactions, Date, and Variant on array
+                $transactions[] = $code;
+                $dates[] = $date;
+                $variants[$code][] = $variant;
+            }
+        }
+
+        $results = [];
+
+        foreach (array_unique($transactions) as $key => $code) {
+            $variants_text = implode(',', $variants[$code]);
+
+            // Create a new TransactionsModel object and save it to the database
+            $transaction = new TransactionsModel();
+            $transaction->code_transactions = $code;
+            $transaction->date = $date;
+            $transaction->variant = $variants_text;
+            $transaction->save();
+        }
 
         return back()->with([
-			'message' => "Succesfully Imported Data",
-			'type' => "success"
-		]);
+            'message' => "Succesfully Imported Data and Saved to Database",
+            'type' => "success"
+        ]);
     }
+
 }
