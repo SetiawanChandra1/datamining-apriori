@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('transactions_models', function (Blueprint $table) {
             $table->id();
             $table->string('code_transactions',100);
-            $table->string('date',100);
+            $table->date('date');
             $table->string('variant',100);
             $table->timestamps();
         });

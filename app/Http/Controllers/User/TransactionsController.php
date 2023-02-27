@@ -148,7 +148,16 @@ class TransactionsController extends Controller
 
         foreach (array_unique($transactions) as $key => $code) {
             $variants_text = implode(',', $variants[$code]);
-
+        
+            // Find the first date for this code
+            $date = null;
+            foreach ($reader[0] as $row) {
+                if (substr($row[0], -9) === $code) {
+                    $date = $row[1];
+                    break;
+                }
+            }
+        
             // Create a new TransactionsModel object and save it to the database
             $transaction = new TransactionsModel();
             $transaction->code_transactions = $code;
@@ -156,6 +165,7 @@ class TransactionsController extends Controller
             $transaction->variant = $variants_text;
             $transaction->save();
         }
+        
 
         return back()->with([
             'message' => "Succesfully Imported Data and Saved to Database",
