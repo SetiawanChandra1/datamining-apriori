@@ -38,6 +38,8 @@ Route::middleware(['auth', 'role:user'])->prefix('dashboard')->name('user.dashbo
     //Transaction Section
     Route::resource('transactions', TransactionsController::class);
     Route::post('user-import', [TransactionsController::class, 'import'])->name('user.import');
+    Route::delete('user/dashboard/transactions/destroy-all', [TransactionsController::class, 'destroyAll'])->name('transactions.destroyAll');
+
 
 });
 

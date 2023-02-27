@@ -117,6 +117,15 @@ class TransactionsController extends Controller
         ]);
     }
 
+    public function destroyAll()
+    {
+        TransactionsModel::truncate();
+        return back()->with([
+            'message' => "Succesfully Delete All Data on Database",
+            'type' => "success"
+        ]);
+    }
+
 
     public function import(Request $request)
     {
@@ -135,7 +144,7 @@ class TransactionsController extends Controller
             if ($key > 0) {
                 $code = substr($row[0], -9);
                 $date = $row[1];
-                $variant = $row[2];
+                $variant = $row[4];
 
                 // Save Code Transactions, Date, and Variant on array
                 $transactions[] = $code;

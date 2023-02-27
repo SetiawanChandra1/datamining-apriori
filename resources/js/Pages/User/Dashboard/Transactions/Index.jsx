@@ -5,7 +5,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import FlashMessage from "@/Components/FlashMessage";
 import { Head, Link, useForm } from "@inertiajs/inertia-react";
 import { useState } from "react";
-import NavLink from "@/Components/NavLink";
+import axios from "axios";
 
 export default function Index({ auth, flashMessage, importedData }) {
     const {
@@ -42,6 +42,12 @@ export default function Index({ auth, flashMessage, importedData }) {
             setLimit(importedData.count);
         } else {
             setLimit(selectedValue);
+        }
+    };
+
+    const handleDeleteAll = () => {
+        if (confirm("Are you sure you want to delete all data?")) {
+            destroy(route("user.dashboard.transactions.destroyAll"));
         }
     };
 
@@ -83,6 +89,15 @@ export default function Index({ auth, flashMessage, importedData }) {
                     <option value="100">100</option>
                     <option value="-1">All Data</option>
                 </select>
+                <span onClick={handleDeleteAll}>
+                    <PrimaryButton
+                        type="button"
+                        className="mb-4 w-2/12 float-right"
+                        variant="danger"
+                    >
+                        Delete All
+                    </PrimaryButton>
+                </span>
             </div>
             <table className="table-fixed w-full text-center mt-4">
                 <thead>

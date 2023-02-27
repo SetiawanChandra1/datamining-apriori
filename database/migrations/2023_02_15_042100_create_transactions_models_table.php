@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('code_transactions',100);
             $table->date('date');
-            $table->string('variant',100);
+            $table->string('variant',200);
             $table->timestamps();
         });
     }
