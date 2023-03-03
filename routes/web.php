@@ -10,6 +10,8 @@ use App\Http\Controllers\User\SubscriptionPlanController;
 use App\Http\Controllers\admin\MovieController as AdminMovieController; 
 
 use App\Http\Controllers\User\TransactionsController;
+use App\Http\Controllers\User\DataProcessController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +42,8 @@ Route::middleware(['auth', 'role:user'])->prefix('dashboard')->name('user.dashbo
     Route::post('user-import', [TransactionsController::class, 'import'])->name('user.import');
     Route::delete('user/dashboard/transactions/destroy-all', [TransactionsController::class, 'destroyAll'])->name('transactions.destroyAll');
 
+    //DataProcess Section
+    Route::resource('dataprocess', DataProcessController::class);
 
 });
 

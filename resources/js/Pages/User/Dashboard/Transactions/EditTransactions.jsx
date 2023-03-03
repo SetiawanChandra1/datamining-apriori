@@ -23,9 +23,6 @@ export default function Create({ auth, TransactionsModel }) {
 
     const submit = (e) => {
         e.preventDefault();
-        // if (data.thumbnail === movie.thumbnail) {
-        //     delete data.thumbnail;
-        // }
 
         Inertia.post(
             route("user.dashboard.transactions.update", TransactionsModel.id),

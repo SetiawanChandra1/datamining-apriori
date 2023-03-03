@@ -2,7 +2,14 @@ import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
 TextInput.propTypes = {
-    type: PropTypes.oneOf(["text", "email", "password", "number", "file"]),
+    type: PropTypes.oneOf([
+        "text",
+        "email",
+        "password",
+        "number",
+        "file",
+        "date",
+    ]),
     name: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

@@ -78,6 +78,8 @@ export default function Topbar({ name }) {
                 return "Dashboard";
             case "/dashboard/subscription-plan":
                 return "Payments";
+            case "/dashboard/transactions":
+                return "Transactions";
             default:
                 return "Unknown";
         }
