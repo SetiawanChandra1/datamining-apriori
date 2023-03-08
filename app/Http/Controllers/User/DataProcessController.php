@@ -4,7 +4,10 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\DataProcessModel;
+use App\Models\TransactionsModel;
 use Illuminate\Http\Request;
+### Additional ###
+
 
 class DataProcessController extends Controller
 {
@@ -42,7 +45,7 @@ class DataProcessController extends Controller
             'minimum_support' => 'required|numeric|min:0',
             'minimum_confidence' => 'required|numeric|min:0',
         ]);
-
+        //save data to database
         $data = new DataProcessModel();
         $data->username = auth()->user()->name;
         $data->start_date = $request->input('start_date');
@@ -51,12 +54,77 @@ class DataProcessController extends Controller
         $data->min_confidence = $request->input('minimum_confidence');
         $data->save();
 
-        return redirect(route('user.dashboard.dataprocess.index'))->with([
-            'message' => "Data Inserted successfully",
-            'type' => 'success'
-        ]);
-    }
+        /// Get input from request
+        $start_date = $request->input('start_date');
+        $end_date = $request->input('end_date');
+        $minimum_support = $request->input('minimum_support');
+        $minimum_confidence = $request->input('minimum_confidence');
 
+        // Get unique variants
+        $getVariant = \DB::select("
+            SELECT DISTINCT SUBSTRING_INDEX(variant, ',', 1) AS variant 
+            FROM transactions_models 
+            UNION 
+            SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(variant, ',', 2), ',', -1) AS variant 
+            FROM transactions_models
+        ");
+
+        // Get transactions within date range
+        $transactionModels = \App\Models\TransactionsModel::whereBetween('date', [$start_date, $end_date])->get();
+
+        // Get count transactions within date range
+        $totalTransactions = $transactionModels->count();
+
+        // Get frequency of each variant
+        $variantFrequency = [];
+        foreach ($getVariant as $variant) {
+            $variantFrequency[$variant->variant] = 0;
+            foreach ($transactionModels as $transaction) {
+                if (strpos($transaction->variant, $variant->variant) !== false) {
+                    $variantFrequency[$variant->variant]++;
+                }
+            }
+        }
+
+        // Calculate minimum support for each variant
+        $minimumSupport = [];
+        foreach ($variantFrequency as $variant => $frequency) {
+            $minimumSupport[$variant] = round($frequency / $totalTransactions * 100, 2);
+        }
+
+        // Filter items that pass and fail the minimum support
+        $passMinimumSupport = array_filter($minimumSupport, function($support) use ($minimum_support) {
+            return $support >= $minimum_support;
+        });
+
+        $failMinimumSupport = array_filter($minimumSupport, function($support) use ($minimum_support) {
+            return $support < $minimum_support;
+        });
+
+        return inertia('User/Dashboard/DataProcess/Index', [
+            'variantFrequency'   => $variantFrequency,
+            'passMinimumSupport' => $passMinimumSupport,
+            'failMinimumSupport' => $failMinimumSupport,
+            'minimum_support'    => $minimum_support,
+            'minimum_confidence' => $minimum_confidence,
+            'totalTransactions'  => $totalTransactions,
+        ]);  
+    }
+        // return redirect(route('user.dashboard.dataprocess.index'))->with([
+        //     'message' => "Data Processed successfully",
+        //     'type' => 'success'
+        // ]);
+
+    // Get all possible combinations of variants
+    // $variantCombinations = array();
+    // foreach ($getVariant as $variant) {
+    //     foreach ($getVariant as $variant2) {
+    //         if ($variant->variant != $variant2->variant) {
+    //             $variantCombinations[] = $variant->variant . ',' . $variant2->variant;
+    //         }
+    //     }
+    // }
+    // dd($variantCombinations);
     /**
      * Display the specified resource.
      *
@@ -101,4 +169,5 @@ class DataProcessController extends Controller
     {
         //
     }
+
 }

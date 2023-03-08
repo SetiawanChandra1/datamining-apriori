@@ -5,8 +5,16 @@ import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import FlashMessage from "@/Components/FlashMessage";
 import { Head, useForm } from "@inertiajs/inertia-react";
+import React, { useState } from "react";
 
-export default function Index({ auth, flashMessage }) {
+export default function Index({
+    auth,
+    flashMessage,
+    passMinimumSupport,
+    failMinimumSupport,
+    variantFrequency,
+    totalTransactions,
+}) {
     const { setData, post, processing, errors } = useForm();
 
     const onHandleChange = (event) => {
@@ -76,7 +84,6 @@ export default function Index({ auth, flashMessage }) {
                             name="end_date"
                             variant="primary-outline"
                             handleChange={onHandleChange}
-                            placeholder="Choose end date"
                             isError={errors.end_date}
                             className="w-52"
                         />
@@ -115,6 +122,84 @@ export default function Index({ auth, flashMessage }) {
                     Process Data
                 </PrimaryButton>
             </form>
+            <h1 className="mt-8 mb-2">
+                <b>Total Transactions : {totalTransactions}</b>
+            </h1>
+            <h1 className="mt-8 mb-2">
+                <b>Table Itemset 1</b>
+            </h1>
+            <table className="table-auto">
+                <thead>
+                    <tr>
+                        <th className="px-4 py-2">No</th>
+                        <th className="px-4 py-2">Item</th>
+                        <th className="px-4 py-2">Amount</th>
+                        <th className="px-4 py-2">Support</th>
+                        <th className="px-4 py-2">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {passMinimumSupport &&
+                        variantFrequency &&
+                        Object.entries(passMinimumSupport).map(
+                            ([key, support], index) => (
+                                <tr key={key}>
+                                    <td className="border px-4 py-2">
+                                        {index + 1}
+                                    </td>
+                                    <td className="border px-4 py-2">{key}</td>
+                                    <td className="border px-4 py-2">
+                                        {variantFrequency[key]}
+                                    </td>
+                                    <td className="border px-4 py-2">
+                                        {support}%
+                                    </td>
+                                    <td className="border px-4 py-2 text-green-500">
+                                        <b>Pass</b>
+                                    </td>
+                                </tr>
+                            )
+                        )}
+                </tbody>
+            </table>
+            {failMinimumSupport &&
+                variantFrequency &&
+                Object.entries(failMinimumSupport).length > 0 && (
+                    <table className="table-auto mt-4">
+                        <thead>
+                            <tr>
+                                <th className="px-4 py-2">No</th>
+                                <th className="px-4 py-2">Item</th>
+                                <th className="px-4 py-2">Amount</th>
+                                <th className="px-4 py-2">Support</th>
+                                <th className="px-4 py-2">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {Object.entries(failMinimumSupport).map(
+                                ([key, support], index) => (
+                                    <tr key={key}>
+                                        <td className="border px-4 py-2">
+                                            {index + 1}
+                                        </td>
+                                        <td className="border px-4 py-2">
+                                            {key}
+                                        </td>
+                                        <td className="border px-4 py-2">
+                                            {variantFrequency[key]}
+                                        </td>
+                                        <td className="border px-4 py-2">
+                                            {support}%
+                                        </td>
+                                        <td className="border px-4 py-2 text-red-500">
+                                            <b>Fail</b>
+                                        </td>
+                                    </tr>
+                                )
+                            )}
+                        </tbody>
+                    </table>
+                )}
         </Authenticated>
     );
 }
